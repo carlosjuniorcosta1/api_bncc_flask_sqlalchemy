@@ -15,16 +15,16 @@ class Aluno(db.Model):
     data_cadastro = db.Column(db.Date, nullable = False)
     status_aluno = db.Column(db.Boolean, nullable=False)
     id_turma = db.Column(db.Integer, ForeignKey("tabela_turmas.id_turma") )
-
+    turma = db.relationship('Turma', backref="alunos", uselist=False)
 
     def __init__(self, nome, sobrenome, ano, data_nascimento, id_turma):
         self.nome = nome 
         self.sobrenome = sobrenome
-        self.nome_completo = self.nome + " " + self.sobrenome ###auto
+        self.nome_completo = self.nome + " " + self.sobrenome # preenche auto
         self.ano = ano
-        self.nivel_ensino = self.preenche_nivel() 
-        self.data_nascimento = data_nascimento
-        self.data_cadastro = datetime.now().date() #####auto
+        self.nivel_ensino = self.preenche_nivel() # preenche auto
+        self.data_nascimento = self.preenche_data_nascimento(data_nascimento) #digitar data brasileira
+        self.data_cadastro = datetime.now().date() # preenche auto
         self.status_aluno = True 
         self.id_turma = id_turma
 
@@ -35,6 +35,11 @@ class Aluno(db.Model):
         elif self.ano.endswith('_em'):
             nivel_auto = "em"
             return nivel_auto
+        
+    def preenche_data_nascimento(self, data_str):
+        dia, mes, ano = map(int, data_str.split('/'))
+        return datetime(ano, mes, dia).date()
+
     def to_json(self):
         return {
             'id_aluno': self.id_aluno,
@@ -44,10 +49,16 @@ class Aluno(db.Model):
             'ano': self.ano,
             'nivel_ensino': self.nivel_ensino,
             'data_nascimento': self.data_nascimento.strftime('%d/%m/%Y'),
-            'data_cadastro': self.data_cadastro.strftime('%d/%m/%Y'),
+            'data_cadastro': self.data_cadastro.strftime("%d/%m/%Y"),
             'status_aluno': self.status_aluno,
             "id_turma": self.id_turma
         }
+    @staticmethod
+    def to_json_list(alunos):
+        alunos_json = []
+        for aluno in alunos:
+            alunos_json.append(aluno.to_json())
+        return alunos_json
         
 
     

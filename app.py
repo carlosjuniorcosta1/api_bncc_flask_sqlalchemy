@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from config.config import Config, db
+from blueprints.aluno_dir_bp.aluno_bp import aluno_bp
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from models.aluno import Aluno
@@ -16,10 +17,11 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 db.init_app(app)
+app.register_blueprint(aluno_bp)
 Migrate(app, db)
 
-
-
+if __name__ == "__main__": 
+    app.run()
 
 
 

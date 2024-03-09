@@ -13,6 +13,9 @@ class Aula(db.Model):
     id_materia = db.Column(db.Integer, ForeignKey("tabela_materias.id_materia"))
     id_bimestre = db.Column(db.Integer, ForeignKey("tabela_bimestres.id_bimestre"))
     id_turma = db.Column(db.Integer, ForeignKey("tabela_turmas.id_turma"))
+    materia = db.relationship("Materia", uselist=False )
+    bimestre = db.relationship("Bimestre", uselist=False)
+    turma = db.relationship("Turma", uselist=False )
 
     def __init__(self, descricao_aula, 
                  habilidade_bncc, id_materia, 

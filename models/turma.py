@@ -16,3 +16,5 @@ class Turma(db.Model):
         "nota": self.turma
 
         }
+
+

@@ -13,6 +13,9 @@ class Atividade(db.Model):
     id_turma = db.Column(db.Integer, ForeignKey("tabela_turmas.id_turma"))
     id_materia = db.Column(db.Integer, ForeignKey("tabela_materias.id_materia"))
     id_bimestre = db.Column(db.Integer, ForeignKey("tabela_bimestres.id_bimestre"))
+    turma = db.relationship("Turma", uselist=False)
+    materia = db.relationship("Materia", uselist=False)
+    bimestre = db.relationship("Bimestre", uselist=False)     
     
     def __init__(self, descricao_atv, valor_atv, id_turma, id_materia, id_bimestre):
         self.descricao_atv = descricao_atv
