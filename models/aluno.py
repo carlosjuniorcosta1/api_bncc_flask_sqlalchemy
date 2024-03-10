@@ -35,7 +35,7 @@ class Aluno(db.Model):
         elif self.ano.endswith('_em'):
             nivel_auto = "em"
             return nivel_auto
-        
+    
     def preenche_data_nascimento(self, data_str):
         dia, mes, ano = map(int, data_str.split('/'))
         return datetime(ano, mes, dia).date()
