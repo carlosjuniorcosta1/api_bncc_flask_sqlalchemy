@@ -1,25 +1,25 @@
 from flask import Flask, jsonify
 from config.config import Config, db
-from blueprints.aluno_dir_bp.aluno_crud_bp import aluno_bp
-from blueprints.aluno_dir_bp.aluno_filtros_bp import aluno_filtro_bp
+from blueprints.student_dir_bp.student_crud import student_bp
+from blueprints.student_dir_bp.student_filters import student_filters_bp
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from models.aluno import Aluno
-from models.bimestre import Bimestre
-from models.materia import Materia
-from models.nota import Nota 
-from models.turma import Turma 
-from models.aula import Aula
-from models.frequencia import Frequencia
-from models.atividade import Atividade 
+from models.student import Student
+from models.bimester import Bimester
+from models.subject import Subject
+from models.score import Score
+from models.group import Group
+from models.lecture import Lecture
+from models.frequency import Frequency
+from models.activity import Activity
 
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
 db.init_app(app)
-app.register_blueprint(aluno_bp)
-app.register_blueprint(aluno_filtro_bp)
+app.register_blueprint(student_bp)
+app.register_blueprint(student_filters_bp)
 Migrate(app, db)
 
 if __name__ == "__main__": 
