@@ -12,6 +12,7 @@ from models.group import Group
 from models.lecture import Lecture
 from models.frequency import Frequency
 from models.activity import Activity
+from models.bncc_guide import BnccGuide 
 
 
 app = Flask(__name__)

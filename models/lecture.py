@@ -1,7 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy import ForeignKey
-
 from config.config import db 
 
 class Lecture(db.Model):
@@ -13,9 +12,11 @@ class Lecture(db.Model):
     subject_id = db.Column(db.Integer, ForeignKey("subjects_table.subject_id"))
     bimester_id = db.Column(db.Integer, ForeignKey("bimesters_table.bimester_id"))
     group_id = db.Column(db.Integer, ForeignKey("groups_table.group_id"))
+    bncc_id = db.Column(db.Integer, ForeignKey("bncc_table.bncc_id"))
     materia = db.relationship("Subject", uselist=False )
     bimester = db.relationship("Bimester", uselist=False)
-    group = db.relationship("Group", uselist=False )
+    group = db.relationship("Group", uselist=False ) 
+    skill = db.relationship('BnccGuide', lazy='joined')
 
     def __init__(self, lecture_description, 
                  bncc_skill, subject_id, 

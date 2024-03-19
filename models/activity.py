@@ -6,7 +6,7 @@ from sqlalchemy import ForeignKey
 class Activity(db.Model):
     __tablename__ = "activities_table"
     act_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    act_date = db.Column(db.Date, default= datetime.now().date())
+    act_date = db.Column(db.Date)
     act_description = db.Column(db.String(100))
     score_atv = db.Column(db.Float)
     act_status = db.Column(db.Boolean, default=False)
