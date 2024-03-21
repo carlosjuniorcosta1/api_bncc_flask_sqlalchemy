@@ -50,6 +50,8 @@ class BnccGuide(db.Model):
             "eighth": self.eighth_el_school,
             "nineth": self.nineth_el_school 
             }
+        def __repr__(self):
+            return f"Component{self.cur_comp}, skill {self.skill}"
     
 
         

@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from config.config import Config, db
 from blueprints.student_dir_bp.student_crud import student_bp
 from blueprints.student_dir_bp.student_filters import student_filters_bp
+from blueprints.activitity_dir_bp.activitity_crud_bp import act_crud_bp
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from models.student import Student
@@ -21,9 +22,12 @@ app.config.from_object(Config)
 db.init_app(app)
 app.register_blueprint(student_bp)
 app.register_blueprint(student_filters_bp)
+app.register_blueprint(act_crud_bp)
 Migrate(app, db)
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
+   
+ 
     app.run()
 
 

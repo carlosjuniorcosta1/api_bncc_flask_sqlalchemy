@@ -6,9 +6,9 @@ from sqlalchemy import ForeignKey
 class Activity(db.Model):
     __tablename__ = "activities_table"
     act_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    act_date = db.Column(db.Date)
-    act_description = db.Column(db.String(100))
-    score_atv = db.Column(db.Float)
+    act_date = db.Column(db.Date, default = datetime.now().date())
+    act_description = db.Column(db.String(100), default = "Atividade avaliativa")
+    total_act = db.Column(db.Float)
     act_status = db.Column(db.Boolean, default=False)
     group_id = db.Column(db.Integer, ForeignKey("groups_table.group_id"))
     subject_id = db.Column(db.Integer, ForeignKey("subjects_table.subject_id"))
@@ -17,12 +17,15 @@ class Activity(db.Model):
     subject = db.relationship("Subject", uselist=False)
     bimester = db.relationship("Bimester", uselist=False)     
     
-    def __init__(self, act_description, score_atv, group_id, subject_id, bimester_id):
+    def __init__(self, act_date, act_description, score_atv,
+                  group_id, subject_id, bimester_id):
+        self.act_date = act_date
         self.act_description = act_description
         self.score_atv = score_atv
         self.group_id = group_id
         self.subject_id = subject_id
         self.bimester_id = bimester_id
+        
 
     def to_json(self):
         return {
