@@ -13,9 +13,9 @@ def get_all_students():
 
 @student_bp.route('/aluno/<int:student_id>', methods=['GET'])
 def get_student(student_id):
-    Student = Student.query.get(student_id)
-    Student_js = Student.to_json()
-    return jsonify(data=Student_js, message="Requested student")
+    student = Student.query.get(student_id)
+    student_js = student.to_json()
+    return jsonify(data=student_js, message="Requested student")
 
 @student_bp.route('/aluno', methods=["GET", "PUT"])
 def update_student():
@@ -57,7 +57,8 @@ def search_student():
         alunos_query = Student.query.filter(Student.group_id == group_id, Student.name.ilike(f"%{name}%"))
 
     if group_id and not name:
-        alunos_query = Student.query.filter_by(group_id == group_id)
+        alunos_query = Student.query.filter(Student.group_id == group_id)    
+
     if name and not surname:  
         alunos_query = Student.query.filter(Student.name.ilike(f"%{name}%"))
     if name and surname:
@@ -69,9 +70,9 @@ def search_student():
     if level:
         alunos_query = Student.query.filter(Student.level.ilike(f"%{level}%"))
     if status:
-        alunos_query = Student.query.filter_by(status_aluno=status)
+        alunos_query = Student.query.filter(Student.status_aluno==status)
     if date_registration:
-        alunos_query = Student.query.filter_by(date_registration=date_registration)
+        alunos_query = Student.query.filter(Student.date_registration==date_registration)
     alunos_result = alunos_query.all()
     alunos_js = [x.to_json() for x in alunos_result]
     

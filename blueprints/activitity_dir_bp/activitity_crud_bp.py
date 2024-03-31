@@ -3,7 +3,9 @@ from config.config import db
 from flask import request, jsonify, Blueprint
 from models.activity import Activity
 from models.student import Student
-from datetime import datetime 
+from datetime import datetime
+from models.bimester_total import BimesterTotal
+from models.bimester_now import BimesterNow
 
 act_crud_bp = Blueprint("act_crud_bp", __name__)
 
@@ -16,23 +18,18 @@ def get_all_act():
     else:
         return jsonify(message="No activities found"), 404
 
-
 @act_crud_bp.route('/atividade/<int:act_id>', methods=["GET"])
 def get_act(act_id):
     act = Activity.query.get(act_id)
+    if not act:
+        return jsonify(message="No activity found with this id"), 404
     if act:
-        act_json = act.to_json()
-        group_id = act_json['group_id']
-        students = Student.query.filter_by(group_id=group_id).with_entities(Student.student_id, Student.full_name).all()
-        students_data = [{'student_id': x.student_id, 'name': x.full_name} for x in students]
-        act_json['students'] = students_data
+        act_json = act.to_json()      
         return jsonify(message="teste", data= act_json), 200
 
-
-@act_crud_bp.route('/atividade', methods=["POST"])
+@act_crud_bp.route('/atividade', methods=["POST", "PUT"])
 def add_act():
     data_act = request.get_json()
-    act_id = data_act.get('act_id')
     act_date = data_act.get('act_date')
     act_date_form = datetime.strptime(act_date, "%d/%m/%Y")
     act_description = data_act.get('act_description')
@@ -41,18 +38,25 @@ def add_act():
     group_id = data_act.get('group_id')
     subject_id = data_act.get('subject_id')
     bimester_id = data_act.get('bimester_id')
-    mandatory_fields = ['act_description', 'total_act']
-    missing_fields = [x for x in mandatory_fields if x not in data_act]
-    if missing_fields:
-        return jsonify(message=f" You have to provide the {', '.join(missing_fields)} field"), 400
-    new_act = Activity(act_date=act_date_form.strftime("%Y/%m/%d"), act_description=act_description,
-                       total_act=total_act, act_status=act_status, group_id=group_id,
-                       subject_id=subject_id, bimester_id=bimester_id)
-    if new_act:
-        db.session.add(new_act)
-        db.session.commit()
-        new_act_json = new_act.to_json()
-        return jsonify(message="New activity added", data=new_act_json), 201
+    bim_total_id = data_act.get('bim_total_id')
+    bim_now_id = data_act.get('bim_now_id')
+    limit_bimester = BimesterTotal.query.filter(BimesterTotal.bim_total_id==bim_total_id)\
+        .with_entities(BimesterTotal.total_bim).first()[0]
+    bimester_now_obj = BimesterNow.query.filter(BimesterNow.bim_now_id==bim_now_id).first()
+    total_sum_now = bimester_now_obj.bim_now_sum
+    test_limit_bimester = total_act + total_sum_now
+    if test_limit_bimester >= limit_bimester:
+        return jsonify(message=f"Invalid value for total_act. You can distribute {limit_bimester} in this bimester and you have {limit_bimester - total_sum_now} remaining"), 400
+    new_act = Activity(act_date=act_date_form.strftime("%Y/%m/%d"), 
+                       act_description=act_description,
+                       total_act=total_act, act_status=act_status,
+                         group_id=group_id,
+                       subject_id=subject_id, bimester_id=bimester_id,
+                         bim_total_id=bim_total_id, bim_now_id=bim_now_id)    
+    db.session.add(new_act)     
+    bimester_now_obj.bim_now_sum += total_act
+    db.session.commit()     
+    return jsonify(message="New activity added", data=new_act.to_json()), 201
     
 @act_crud_bp.route('/atividade', methods=["PUT"])
 def update_act():

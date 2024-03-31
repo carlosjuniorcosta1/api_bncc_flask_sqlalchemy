@@ -13,8 +13,9 @@ from models.group import Group
 from models.lecture import Lecture
 from models.frequency import Frequency
 from models.activity import Activity
-from models.bncc_guide import BnccGuide 
-
+from models.bncc_guide import BnccGuide
+from models.bimester_total import BimesterTotal
+from models.bimester_now import BimesterNow
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -25,9 +26,9 @@ db.init_app(app)
 
 Migrate(app, db)
 
-if __name__ == "__main__":   
- 
-    app.run()
+if __name__ == "__main__":        
+
+    app.run(debug=True)
 
 
 
