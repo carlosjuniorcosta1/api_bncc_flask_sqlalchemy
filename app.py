@@ -16,6 +16,7 @@ from models.activity import Activity
 from models.bncc_guide import BnccGuide
 from models.bimester_total import BimesterTotal
 from models.bimester_now import BimesterNow
+from models.score_control import ScoreControll
 
 app = Flask(__name__)
 app.config.from_object(Config)

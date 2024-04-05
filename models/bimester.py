@@ -12,8 +12,7 @@ class Bimester(db.Model):
         return     {
         "bimester_id": self.bimester_id,
         "bimester": self.bimester
-
-    }
+                }
     
     
 
