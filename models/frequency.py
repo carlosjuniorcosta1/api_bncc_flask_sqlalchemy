@@ -7,8 +7,6 @@ frequency_students = db.Table("students_frequency",
                                ForeignKey("frequencies_table.frequency_id")),
                     db.Column("student_id", db.Integer, ForeignKey("students_table.student_id"))           
                              )
-
-
 class Frequency(db.Model):
     __tablename__ = "frequencies_table"
     frequency_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -21,7 +19,7 @@ class Frequency(db.Model):
         self.present = present
         self.student_id = student_id
         self.lecture_id = lecture_id
-
+        
     def to_json(self):
         return {
             "frequency_id": self.frequency_id,
