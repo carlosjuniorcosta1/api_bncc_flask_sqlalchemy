@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: e550a7f8037d
+Revision ID: 8317d1c73ec5
 Revises: 
-Create Date: 2024-03-28 16:55:26.981189
+Create Date: 2024-04-09 15:02:17.219803
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e550a7f8037d'
+revision = '8317d1c73ec5'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -28,23 +28,6 @@ def upgrade():
     sa.Column('bimester', sa.String(length=10), nullable=True),
     sa.PrimaryKeyConstraint('bimester_id')
     )
-    op.create_table('bncc_table',
-    sa.Column('bncc_id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('cur_comp', sa.String(length=20), nullable=True),
-    sa.Column('k_obj', sa.Text(), nullable=True),
-    sa.Column('skill', sa.Text(), nullable=True),
-    sa.Column('description', sa.Text(), nullable=True),
-    sa.Column('first_el_school', sa.Boolean(), nullable=True),
-    sa.Column('second_el_school', sa.Boolean(), nullable=True),
-    sa.Column('third_el_school', sa.Boolean(), nullable=True),
-    sa.Column('fourth_el_school', sa.Boolean(), nullable=True),
-    sa.Column('fifth_el_school', sa.Boolean(), nullable=True),
-    sa.Column('sixth_el_school', sa.Boolean(), nullable=True),
-    sa.Column('seventh_el_school', sa.Boolean(), nullable=True),
-    sa.Column('eighth_el_school', sa.Boolean(), nullable=True),
-    sa.Column('nineth_el_school', sa.Boolean(), nullable=True),
-    sa.PrimaryKeyConstraint('bncc_id')
-    )
     op.create_table('groups_table',
     sa.Column('group_id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('group', sa.Integer(), nullable=True),
@@ -55,36 +38,37 @@ def upgrade():
     sa.Column('subject', sa.String(length=40), nullable=True),
     sa.PrimaryKeyConstraint('subject_id')
     )
-    op.create_table('activities_table',
-    sa.Column('act_id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('act_date', sa.Date(), nullable=True),
-    sa.Column('act_description', sa.String(length=100), nullable=True),
-    sa.Column('total_act', sa.Float(), nullable=True),
-    sa.Column('act_status', sa.Boolean(), nullable=True),
-    sa.Column('bimpar_id', sa.Integer(), nullable=True),
-    sa.Column('group_id', sa.Integer(), nullable=True),
+    op.create_table('bim_now_table',
+    sa.Column('bim_now_id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('subject_id', sa.Integer(), nullable=True),
+    sa.Column('bim_total_id', sa.Integer(), nullable=True),
     sa.Column('bimester_id', sa.Integer(), nullable=True),
+    sa.Column('group_id', sa.Integer(), nullable=True),
+    sa.Column('bim_now_sum', sa.Float(), nullable=True),
+    sa.ForeignKeyConstraint(['bim_total_id'], ['bim_total_table.bim_total_id'], ),
     sa.ForeignKeyConstraint(['bimester_id'], ['bimesters_table.bimester_id'], ),
-    sa.ForeignKeyConstraint(['bimpar_id'], ['bim_total_table.bim_total_id'], ),
     sa.ForeignKeyConstraint(['group_id'], ['groups_table.group_id'], ),
     sa.ForeignKeyConstraint(['subject_id'], ['subjects_table.subject_id'], ),
-    sa.PrimaryKeyConstraint('act_id')
+    sa.PrimaryKeyConstraint('bim_now_id')
     )
-    op.create_table('lectures_table',
-    sa.Column('lecture_id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('lecture_description', sa.String(length=100), nullable=True),
-    sa.Column('lecture_date', sa.Date(), nullable=True),
-    sa.Column('bncc_skill', sa.Text(), nullable=True),
+    op.create_table('bncc_table',
+    sa.Column('bncc_id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('cur_comp', sa.String(length=20), nullable=True),
     sa.Column('subject_id', sa.Integer(), nullable=True),
-    sa.Column('bimester_id', sa.Integer(), nullable=True),
-    sa.Column('group_id', sa.Integer(), nullable=True),
-    sa.Column('bncc_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['bimester_id'], ['bimesters_table.bimester_id'], ),
-    sa.ForeignKeyConstraint(['bncc_id'], ['bncc_table.bncc_id'], ),
-    sa.ForeignKeyConstraint(['group_id'], ['groups_table.group_id'], ),
+    sa.Column('k_obj', sa.Text(), nullable=True),
+    sa.Column('skill', sa.Text(), nullable=True),
+    sa.Column('description', sa.Text(), nullable=True),
+    sa.Column('es1', sa.Boolean(), nullable=True),
+    sa.Column('es2', sa.Boolean(), nullable=True),
+    sa.Column('es3', sa.Boolean(), nullable=True),
+    sa.Column('es4', sa.Boolean(), nullable=True),
+    sa.Column('es5', sa.Boolean(), nullable=True),
+    sa.Column('es6', sa.Boolean(), nullable=True),
+    sa.Column('es7', sa.Boolean(), nullable=True),
+    sa.Column('es8', sa.Boolean(), nullable=True),
+    sa.Column('es9', sa.Boolean(), nullable=True),
     sa.ForeignKeyConstraint(['subject_id'], ['subjects_table.subject_id'], ),
-    sa.PrimaryKeyConstraint('lecture_id')
+    sa.PrimaryKeyConstraint('bncc_id')
     )
     op.create_table('students_table',
     sa.Column('student_id', sa.Integer(), autoincrement=True, nullable=False),
@@ -100,6 +84,38 @@ def upgrade():
     sa.ForeignKeyConstraint(['group_id'], ['groups_table.group_id'], ),
     sa.PrimaryKeyConstraint('student_id')
     )
+    op.create_table('activities_table',
+    sa.Column('act_id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('act_date', sa.Date(), nullable=True),
+    sa.Column('act_description', sa.String(length=100), nullable=True),
+    sa.Column('total_act', sa.Float(), nullable=True),
+    sa.Column('act_status', sa.Boolean(), nullable=True),
+    sa.Column('bim_total_id', sa.Integer(), nullable=True),
+    sa.Column('bim_now_id', sa.Integer(), nullable=True),
+    sa.Column('group_id', sa.Integer(), nullable=True),
+    sa.Column('subject_id', sa.Integer(), nullable=True),
+    sa.Column('bimester_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['bim_now_id'], ['bim_now_table.bim_now_id'], ),
+    sa.ForeignKeyConstraint(['bim_total_id'], ['bim_total_table.bim_total_id'], ),
+    sa.ForeignKeyConstraint(['bimester_id'], ['bimesters_table.bimester_id'], ),
+    sa.ForeignKeyConstraint(['group_id'], ['groups_table.group_id'], ),
+    sa.ForeignKeyConstraint(['subject_id'], ['subjects_table.subject_id'], ),
+    sa.PrimaryKeyConstraint('act_id')
+    )
+    op.create_table('lectures_table',
+    sa.Column('lecture_id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('lecture_description', sa.String(length=100), nullable=True),
+    sa.Column('lecture_date', sa.Date(), nullable=True),
+    sa.Column('subject_id', sa.Integer(), nullable=True),
+    sa.Column('bimester_id', sa.Integer(), nullable=True),
+    sa.Column('group_id', sa.Integer(), nullable=True),
+    sa.Column('bncc_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['bimester_id'], ['bimesters_table.bimester_id'], ),
+    sa.ForeignKeyConstraint(['bncc_id'], ['bncc_table.bncc_id'], ),
+    sa.ForeignKeyConstraint(['group_id'], ['groups_table.group_id'], ),
+    sa.ForeignKeyConstraint(['subject_id'], ['subjects_table.subject_id'], ),
+    sa.PrimaryKeyConstraint('lecture_id')
+    )
     op.create_table('frequencies_table',
     sa.Column('frequency_id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('present', sa.Boolean(), nullable=True),
@@ -109,14 +125,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['student_id'], ['students_table.student_id'], ),
     sa.PrimaryKeyConstraint('frequency_id')
     )
-    op.create_table('scores',
-    sa.Column('act_id', sa.Integer(), nullable=False),
-    sa.Column('student_id', sa.Integer(), nullable=False),
-    sa.Column('score', sa.Float(), nullable=True),
-    sa.ForeignKeyConstraint(['act_id'], ['activities_table.act_id'], ),
-    sa.ForeignKeyConstraint(['student_id'], ['students_table.student_id'], ),
-    sa.PrimaryKeyConstraint('act_id', 'student_id')
-    )
     op.create_table('scores_table',
     sa.Column('score_id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('score', sa.Float(), nullable=True),
@@ -125,6 +133,13 @@ def upgrade():
     sa.ForeignKeyConstraint(['act_id'], ['activities_table.act_id'], ),
     sa.ForeignKeyConstraint(['student_id'], ['students_table.student_id'], ),
     sa.PrimaryKeyConstraint('score_id')
+    )
+    op.create_table('score_controll_table',
+    sa.Column('score_controll_id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('score_id', sa.Integer(), nullable=True),
+    sa.Column('score_now', sa.Float(), nullable=True),
+    sa.ForeignKeyConstraint(['score_id'], ['scores_table.score_id'], ),
+    sa.PrimaryKeyConstraint('score_controll_id')
     )
     op.create_table('students_frequency',
     sa.Column('frequency_id', sa.Integer(), nullable=True),
@@ -138,15 +153,16 @@ def upgrade():
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
     op.drop_table('students_frequency')
+    op.drop_table('score_controll_table')
     op.drop_table('scores_table')
-    op.drop_table('scores')
     op.drop_table('frequencies_table')
-    op.drop_table('students_table')
     op.drop_table('lectures_table')
     op.drop_table('activities_table')
+    op.drop_table('students_table')
+    op.drop_table('bncc_table')
+    op.drop_table('bim_now_table')
     op.drop_table('subjects_table')
     op.drop_table('groups_table')
-    op.drop_table('bncc_table')
     op.drop_table('bimesters_table')
     op.drop_table('bim_total_table')
     # ### end Alembic commands ###

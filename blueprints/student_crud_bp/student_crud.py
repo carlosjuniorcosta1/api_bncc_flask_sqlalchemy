@@ -7,9 +7,9 @@ student_bp = Blueprint("student_bp", __name__)
 
 @student_bp.route('/alunos', methods=["GET"])
 def get_all_students():
-    Students = Student.query.all()
-    Students_lista_js =  Student.to_json_list(Students)
-    return jsonify(data= Students_lista_js, message="List of students")
+    students = Student.query.all()
+    students_js =  [x.to_json() for x in students]
+    return jsonify(data= students_js, message="List of students")
 
 @student_bp.route('/aluno/<int:student_id>', methods=['GET'])
 def get_student(student_id):
@@ -33,11 +33,10 @@ def add_student():
     student_data = request.get_json()
     name = student_data['name']
     surname = student_data['surname']
-    grade = student_data['grade']
     date_birth = student_data['date_birth']
     group_id = student_data['group_id']
     new_student = Student(name=name, surname=surname, 
-                       grade=grade, date_birth=date_birth,
+                        date_birth=date_birth,
                        group_id=group_id)
     db.session.add(new_student)
     db.session.commit()

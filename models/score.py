@@ -2,7 +2,6 @@ from flask_sqlalchemy import SQLAlchemy
 from config.config import db 
 from sqlalchemy import ForeignKey
 
-
 class Score(db.Model):
     __tablename__ = "scores_table"
     score_id = db.Column(db.Integer, primary_key=True, autoincrement=True)

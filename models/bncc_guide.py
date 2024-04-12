@@ -10,32 +10,33 @@ class BnccGuide(db.Model):
     k_obj = db.Column(db.Text)
     skill = db.Column(db.Text)
     description = db.Column(db.Text)
-    first_el_school = db.Column(db.Boolean)
-    second_el_school = db.Column(db.Boolean)
-    third_el_school = db.Column(db.Boolean)
-    fourth_el_school = db.Column(db.Boolean)
-    fifth_el_school = db.Column(db.Boolean)
-    sixth_el_school = db.Column(db.Boolean)
-    seventh_el_school = db.Column(db.Boolean)
-    eighth_el_school = db.Column(db.Boolean)
-    nineth_el_school = db.Column(db.Boolean)
+    es1 = db.Column(db.Boolean)
+    es2 = db.Column(db.Boolean)
+    es3 = db.Column(db.Boolean)
+    es4 = db.Column(db.Boolean)
+    es5 = db.Column(db.Boolean)
+    es6 = db.Column(db.Boolean)
+    es7 = db.Column(db.Boolean)
+    es8 = db.Column(db.Boolean)
+    es9 = db.Column(db.Boolean)
 
-    def __init__(self, cur_comp, subject_id, skill, description, first_el_school, second_el_school,
-                 third_el_school, fourth_el_school, fifth_el_school, sixth_el_school,
-                 seventh_el_school, eighth_el_school, nineth_el_school):
+    def __init__(self, cur_comp,subject_id, skill, 
+                 description, es1, es2,
+                 es3, es4, es5, es6,
+                 es7, es8, es9):
         self.cur_comp = cur_comp
         self.subject_id = subject_id
         self.skill = skill
         self.description = description
-        self.first_el_school = first_el_school
-        self.second_el_school = second_el_school
-        self.third_el_school = third_el_school
-        self.fourth_el_school = fourth_el_school
-        self.fifth_el_school = fifth_el_school
-        self.sixth_el_school = sixth_el_school
-        self.seventh_el_school = seventh_el_school
-        self.eighth = eighth_el_school
-        self.nineth = nineth_el_school
+        self.es1 = es1
+        self.es2 = es2
+        self.es3 = es3
+        self.es4 = es4
+        self.es5 = es5
+        self.es6 = es6
+        self.es7 = es7
+        self.es8 = es8
+        self.es9 = es9
 
     def to_json(self):
             return {
@@ -44,15 +45,15 @@ class BnccGuide(db.Model):
             "subject_id": self.subject_id,
             "skill": self.skill,
             "description": self.description,
-            "first_el_school": self.first_el_school,
-            "second_el_school": self.second_el_school,
-            "third_el_school": self.third_el_school,
-            "fourth_el_school": self.fourth_el_school,
-            "fifth_el_school": self.fifth_el_school,
-            "sixth_el_school": self.sixth_el_school,
-            "seventh_el_school": self.seventh_el_school,
-            "eighth": self.eighth_el_school,
-            "nineth": self.nineth_el_school 
+            "es1": self.es1,
+            "es2": self.es2,
+            "es3": self.es3,
+            "es4": self.es4,
+            "es5": self.es5,
+            "es6": self.es6,
+            "es7": self.es7,
+            "es8": self.es8,
+            "es9": self.es9 
             }
     def __repr__(self):
             return f"Component{self.cur_comp}, skill {self.skill}"
